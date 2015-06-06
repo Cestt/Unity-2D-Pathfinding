@@ -7,8 +7,11 @@ public class Node{
 	public Vector2 worldPosition;
 	public int gCost;
 	public int hCost;
+
 	public int gridX;
 	public int gridY;
+
+	public Node parent;
 
 	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY){
 
