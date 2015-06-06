@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
 
@@ -27,7 +28,7 @@ public class Grid : MonoBehaviour {
 			for(int j = 0; j < gridSizeY; j++){
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (i * nodeSize + (nodeSize/2)) + Vector3.up * (j * nodeSize + (nodeSize/2));
 				bool walkable = !(Physics2D.OverlapCircle(worldPoint,nodeSize/2,unwalkableMask));
-				grid[i,j] = new Node(walkable,worldPoint);
+				grid[i,j] = new Node(walkable,worldPoint,i,j);
 			}
 
 		}
@@ -44,6 +45,27 @@ public class Grid : MonoBehaviour {
 		int y = Mathf.RoundToInt((gridSizeY - 1) * percetnY);
 
 		return grid[x,y];
+	}
+
+	public List<Node> GetNeighbours(Node node){
+
+		List<Node> neighbours = new List<Node>();
+
+		for(int x = -1; x <= 1 ; x++){
+			for(int y = -1; y <= 1 ; y++){
+
+				if( x == 0 & y == 0)
+					continue;
+
+				int checkX = node.gridX + x;
+				int checkY = node.gridY + y;
+
+				if(checkX >= 0 & checkX < gridSizeX & checkY >= 0 & checkY < gridSizeY){
+					neighbours.Add(grid[checkX,checkY]);
+				}
+			}
+		}
+		return neighbours;
 	}
 
 	void OnDrawGizmos(){
