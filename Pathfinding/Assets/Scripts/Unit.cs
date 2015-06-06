@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class Unit : MonoBehaviour {
@@ -7,18 +8,21 @@ public class Unit : MonoBehaviour {
 	public float speed;
 	public bool drawPath;
 	Vector3[] path;
+	public Vector3 oldTargetPos;
 	int targetIndex;
-	public Vector3 oldPosition;
+	Agent agent;
+
+	PathRequestManager.PathRequest queueIndex;
 
 	void Start(){
-		oldPosition = target.position;
-		PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
+		agent = target.GetComponent<Agent>();
+		queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
 	}
 	void Update(){
-		if(oldPosition != target.position){
-			PathRequestManager.ClearQeue();
-			PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
-
+		if(agent.oldPosition != oldTargetPos){
+			PathRequestManager.RemoveFromQeue(queueIndex);
+			queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
+			oldTargetPos = target.position;
 		}
 
 	}
@@ -67,4 +71,5 @@ public class Unit : MonoBehaviour {
 		}
 			
 	}
+
 }

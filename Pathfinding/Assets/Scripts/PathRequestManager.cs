@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class PathRequestManager : MonoBehaviour {
 
-	Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
+	List<PathRequest> pathRequestQueue = new List<PathRequest>();
 	PathRequest currentPathRequest;
 
 	static PathRequestManager manager;
@@ -17,17 +17,20 @@ public class PathRequestManager : MonoBehaviour {
 		pathFinding = GetComponent<PathFinding>(); 
 	}
 
-	public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback){
+	public static PathRequest  RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback){
 		PathRequest newPathRequest = new PathRequest(pathStart,pathEnd,callback);
-		manager.pathRequestQueue.Enqueue(newPathRequest);
+		manager.pathRequestQueue.Add(newPathRequest);
 		manager.TryProcessNext();
+		return newPathRequest;
 	}
-	public static void ClearQeue(){
-		manager.pathRequestQueue.Clear();
+	public static void RemoveFromQeue(PathRequest request){
+		manager.pathRequestQueue.Remove(request);
 	}
+
 	void TryProcessNext(){
 		if(!isProcessingPath & pathRequestQueue.Count > 0){
-			currentPathRequest = pathRequestQueue.Dequeue();
+			currentPathRequest = pathRequestQueue[pathRequestQueue.Count - 1];
+			pathRequestQueue.RemoveAt(pathRequestQueue.Count - 1);
 			isProcessingPath = true;
 			pathFinding.StartFindPath(currentPathRequest.pathStart,currentPathRequest.pathEnd);
 		}
@@ -38,7 +41,7 @@ public class PathRequestManager : MonoBehaviour {
 		TryProcessNext();
 	}
 
-	struct PathRequest{
+	public struct PathRequest{
 		public Vector3 pathStart;
 		public Vector3 pathEnd;
 		public Action<Vector3[], bool> callback;
