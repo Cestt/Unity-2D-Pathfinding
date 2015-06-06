@@ -6,16 +6,23 @@ public class Grid : MonoBehaviour {
 
 	Node[,] grid;
 	public LayerMask unwalkableMask;
+	public bool displayGizmos;
 	public Vector2 gridWorldSize;
 	public float nodeSize;
 
 	int gridSizeX, gridSizeY;
+
 
 	void Awake(){
 		gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeSize);
 		gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeSize);
 
 		CreateGrid();
+	}
+	public int maxHeapSize{
+		get{
+			return gridSizeX * gridSizeY;
+		}
 	}
 
 	void CreateGrid(){
@@ -68,20 +75,18 @@ public class Grid : MonoBehaviour {
 		return neighbours;
 	}
 
-	public List<Node> path;
 	void OnDrawGizmos(){
 
 		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,gridWorldSize.y,1));
-
-		if(grid != null){
 		
-			foreach(Node n in grid){
-				Gizmos.color = (n.walkable)?Color.white:Color.red;
-				if(path != null)
-					if(path.Contains(n))
-						Gizmos.color = Color.black;
-				Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeSize-.1f));
+			if(grid != null & displayGizmos){
+				
+				foreach(Node n in grid){
+					Gizmos.color = (n.walkable)?Color.white:Color.red;
+					Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeSize-.1f));
+				}
 			}
 		}
-	}
+
+			
 }
