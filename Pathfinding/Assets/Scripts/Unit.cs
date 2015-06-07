@@ -17,16 +17,13 @@ public class Unit : MonoBehaviour {
 	void Start(){
 		agent = target.GetComponent<Agent>();
 		queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
-	}
-	void Update(){
-		if(agent.oldPosition != oldTargetPos){
-			PathRequestManager.RemoveFromQeue(queueIndex);
-			queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
-			oldTargetPos = target.position;
-		}
-
+		InvokeRepeating("PathTry",0,0.1f);
 	}
 
+	void PathTry(){
+		PathRequestManager.RemoveFromQeue(queueIndex);
+		queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
+	}
 	public void OnPathFound(Vector3[] newPath,bool pathSuccessful){
 		if(pathSuccessful){
 			path = null;
