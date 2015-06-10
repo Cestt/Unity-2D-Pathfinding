@@ -6,40 +6,42 @@ public class Unit : MonoBehaviour {
 
 	public Transform target;
 	public float speed;
-	public bool drawPath;
+	public bool procesing;
 	Vector3[] path;
 	public Vector3 oldTargetPos;
 	int targetIndex;
 	Agent agent;
-
 	PathRequestManager.PathRequest queueIndex;
+	Action<string> currentCallback;
+	Action pathFinished;
 
-	void Start(){
-		agent = target.GetComponent<Agent>();
-		queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
-		InvokeRepeating("PathTry",0,0.1f);
-	}
 
-	void PathTry(){
-		PathRequestManager.RemoveFromQeue(queueIndex);
-		queueIndex = PathRequestManager.RequestPath(transform.position,target.transform.position, OnPathFound);
+	public void PathTry(Vector3 tPosition, Action<string> callback, Action finished){
+		queueIndex = PathRequestManager.RequestPath(transform.position,tPosition, OnPathFound);
+		currentCallback = callback;
+		pathFinished = finished;
 	}
 	public void OnPathFound(Vector3[] newPath,bool pathSuccessful){
 		if(pathSuccessful){
-			path = null;
 			path = newPath;
+			targetIndex = 0;
+			currentCallback("Working");
 			StopCoroutine("FollowPath");
 			StartCoroutine("FollowPath");
+			procesing = true;
 		}
 	}
 	IEnumerator FollowPath(){
-		if(path [0] != null){
+
 			
 			Vector3 currentWayPoint = path[0];
+		Debug.Log(path.Length);
 			while(true){
 				if(transform.position == currentWayPoint){
 					targetIndex++;
 					if(targetIndex >= path.Length){
+						procesing = false;
+						pathFinished();
 						yield break;
 					}
 					currentWayPoint = path[targetIndex];
@@ -47,26 +49,9 @@ public class Unit : MonoBehaviour {
 				transform.position = Vector3.MoveTowards(transform.position,currentWayPoint,speed * Time.fixedDeltaTime);
 				yield return null;
 			}
-		}
+		
 	}
 
-	public void OnDrawGizmos() {
-		if(drawPath){
-			if (path != null) {
-				for (int i = targetIndex; i < path.Length; i ++) {
-					Gizmos.color = Color.black;
-					Gizmos.DrawCube(path[i], Vector3.one);
-					
-					if (i == targetIndex) {
-						Gizmos.DrawLine(transform.position, path[i]);
-					}
-					else {
-						Gizmos.DrawLine(path[i-1],path[i]);
-					}
-				}
-			}
-		}
-			
-	}
+
 
 }
