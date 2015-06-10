@@ -21,7 +21,6 @@ public class PathFinding : MonoBehaviour {
 
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition){
 
-
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
 

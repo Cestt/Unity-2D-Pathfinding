@@ -8,8 +8,7 @@ public class Unit_Labor : MonoBehaviour {
 	public State state = State.Idle;
 
 	public Queue<Vector2> work = new Queue<Vector2>();
-
-	public int count;
+	
 
 	private Unit unit;
 
@@ -18,20 +17,31 @@ public class Unit_Labor : MonoBehaviour {
 	}
 
 	void Update(){
-		count = work.Count;
+
 	}
 
 	public void InsertQueue (Vector2 tposition) {
 		work.Enqueue(tposition);
-		TryNext();
+		Next();
 	}
-	
-	void TryNext(){
+	void Next(){
+		StopCoroutine("TryNext");
+		StartCoroutine("TryNext");
+	}
+
+	IEnumerator TryNext(){
+
 		if(work.Count > 0 & !unit.procesing){
-			unit.PathTry(work.Dequeue(),StateChange,TryNext);
-		}else if(!unit.procesing){
+			unit.PathTry(work.Dequeue(),StateChange,Next);
+			yield return null;
+		}else if(work.Count > 0){
+			yield return null;
+			Next();
+		}else if(work.Count == 0 & !unit.procesing){
+			yield return null;
 			StateChange("Idle");
 		}
+		yield return null;
 	}
 
 	void StateChange(string states){
