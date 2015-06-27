@@ -20,6 +20,8 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition){
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
 
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
@@ -72,6 +74,8 @@ public class PathFinding : MonoBehaviour {
 				waypoints = RetracePath(startNode,targetNode);
 			}
 			pathManager.FinishedProcessingPath(waypoints,pathSuccess);
+		sw.Stop();
+		print("Find path in: " + sw.ElapsedMilliseconds +" ms");
 	}
 
 	Vector3[] RetracePath(Node startNode, Node endNode){

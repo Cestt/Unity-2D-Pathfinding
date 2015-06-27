@@ -4,9 +4,12 @@ using System.Collections;
 public class Touch : MonoBehaviour {
 
 	GameObject[] Miners;
+	public GameObject original;
+	private Grid grid;
 
 	void Awake () {
 		Miners = GameObject.FindGameObjectsWithTag("Miner");
+		grid = GetComponent<Grid>();
 	}
 	
 
@@ -41,6 +44,14 @@ public class Touch : MonoBehaviour {
 				lessBusyMiner.GetComponent<Unit_Labor>().InsertQueue(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			}
 
+		}
+
+		if(Input.GetMouseButtonDown(1)){
+		
+			GameObject clone = (GameObject)Instantiate(original,Camera.main.ScreenToWorldPoint(Input.mousePosition),original.transform.rotation);
+			clone.transform.position = new Vector3(clone.transform.position.x,clone.transform.position.y,0);
+			clone.transform.localScale = new Vector3(100,100,1);
+			grid.CreateGrid();
 		}
 	
 	}

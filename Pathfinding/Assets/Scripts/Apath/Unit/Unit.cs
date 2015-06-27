@@ -24,7 +24,7 @@ public class Unit : MonoBehaviour {
 	public void OnPathFound(Vector3[] newPath,bool pathSuccessful){
 		if(pathSuccessful){
 			path = newPath;
-			Debug.Log(path.Length);
+			Debug.Log("Path Length: " + path.Length);
 			targetIndex = 0;
 			currentCallback("Working");
 			StopCoroutine("FollowPath");

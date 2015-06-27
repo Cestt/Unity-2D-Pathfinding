@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Grid : MonoBehaviour {
 
@@ -25,7 +26,9 @@ public class Grid : MonoBehaviour {
 		}
 	}
 
-	void CreateGrid(){
+	public void CreateGrid(){
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
 		grid = new Node[gridSizeX,gridSizeY];
 		Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2;
 
@@ -39,6 +42,8 @@ public class Grid : MonoBehaviour {
 			}
 
 		}
+		sw.Stop();
+		print("Created grid in: " +sw.ElapsedMilliseconds+" ms");
 	}
 
 	public Node NodeFromWorldPosition(Vector3 worldPosition){

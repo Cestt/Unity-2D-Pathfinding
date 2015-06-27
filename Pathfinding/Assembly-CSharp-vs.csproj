@@ -47,14 +47,15 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Agent.cs" />
-     <Compile Include="Assets\Scripts\Central Hud\Touch.cs" />
-     <Compile Include="Assets\Scripts\Grid.cs" />
-     <Compile Include="Assets\Scripts\Heap.cs" />
-     <Compile Include="Assets\Scripts\Node.cs" />
-     <Compile Include="Assets\Scripts\PathFinding.cs" />
-     <Compile Include="Assets\Scripts\PathRequestManager.cs" />
-     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
-     <Compile Include="Assets\Scripts\Unit\Unit_Labor.cs" />
+     <Compile Include="Assets\Scripts\Apath\Central Hud\Touch.cs" />
+     <Compile Include="Assets\Scripts\Apath\Grid.cs" />
+     <Compile Include="Assets\Scripts\Apath\Heap.cs" />
+     <Compile Include="Assets\Scripts\Apath\Node.cs" />
+     <Compile Include="Assets\Scripts\Apath\PathFinding.cs" />
+     <Compile Include="Assets\Scripts\Apath\PathRequestManager.cs" />
+     <Compile Include="Assets\Scripts\Apath\Unit\Unit.cs" />
+     <Compile Include="Assets\Scripts\Apath\Unit\Unit_Labor.cs" />
+     <Compile Include="Assets\Scripts\Cave\MapGenerator.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
