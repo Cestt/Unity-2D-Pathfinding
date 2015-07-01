@@ -40,8 +40,9 @@ public class MapGenerator : MonoBehaviour {
 		if(showSmoothingProcess){
 			if(smoothness != 0){
 				for(int i = 0; i < smoothness; i++){
-					SmoothMap();
 					yield return new WaitForSeconds(1f);
+					SmoothMap();
+
 				}
 			}
 		}else{

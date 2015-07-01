@@ -33,7 +33,8 @@ public class Unit : MonoBehaviour {
 		}
 	}
 	IEnumerator FollowPath(){
-		
+
+		if(path[0] != null){
 			Vector3 currentWayPoint = path[0];
 			while(true){
 				if(transform.position == currentWayPoint){
@@ -48,6 +49,8 @@ public class Unit : MonoBehaviour {
 				transform.position = Vector3.MoveTowards(transform.position,currentWayPoint,speed * Time.fixedDeltaTime);
 				yield return null;
 			}
+		}
+			
 		
 	}
 
